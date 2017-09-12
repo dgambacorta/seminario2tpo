@@ -1,0 +1,58 @@
+<?php
+/* @var $this SiteController */
+/* @var $model LoginForm */
+/* @var $form CActiveForm  */
+
+$this->pageTitle=Yii::app()->name . ' - Login';
+
+?>
+
+
+
+
+<br>
+<h1>Iniciar Sesión</h1>
+
+<?php
+    foreach(Yii::app()->user->getFlashes() as $key => $message) {
+        echo '<div class="flash-' . $key . '">' . $message . "</div>\n";
+    }
+?>
+<div class="form">
+<?php $form=$this->beginWidget('CActiveForm', array(
+	'id'=>'login-form',
+	'enableClientValidation'=>true,
+	'clientOptions'=>array(
+		'validateOnSubmit'=>true,
+	),
+)); ?>
+
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'Nombre de Usuario'); ?>
+		<?php echo $form->textField($model,'username'); ?>
+		<?php echo $form->error($model,'username'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'Contraseña'); ?>
+		<?php echo $form->passwordField($model,'password'); ?>
+		<?php echo $form->error($model,'password'); ?>
+		
+	</div>
+
+	<div class="row rememberMe">
+		<?php echo $form->checkBox($model,'rememberMe'); ?>
+		<?php echo $form->label($model,'rememberMe'); ?>
+		<?php echo $form->error($model,'rememberMe'); ?>
+	</div>
+
+
+
+	<div class="row buttons">
+		<?php echo CHtml::submitButton('Iniciar Sesion'); ?>
+	</div>
+
+<?php $this->endWidget(); ?>
+</div><!-- form -->
+<br><br><br><br><br><br><br><br><br><br><br>
