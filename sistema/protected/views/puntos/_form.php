@@ -15,19 +15,7 @@ if(Yii::app()->session['nivelAcceso']==1){ //Presencial
 ?>
 
 
-<?php }else{ //Web ?>
-	
-	
-	
-	
-	
-	
-<?php } ?>
-
- 
-
-
-
+<?php }?>
 
 <?php $this->endWidget(); ?>
 

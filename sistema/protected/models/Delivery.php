@@ -86,6 +86,8 @@ class Delivery extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'pedido' => array(self::HAS_ONE, 'Pedido', 'id'),
+			'cliente' => array(self::HAS_ONE, 'Cliente', 'id')
 		);
 	}
 
