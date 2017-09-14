@@ -5,9 +5,9 @@
 /* @var $model Pedido */
 /* @var $form CActiveForm */
 
-$delivery = Delivery::model()->findBySql("select * from Despacho where idPedido = ".intval($model->id));
-$cliente = Cliente::model()->findBySql("select * from Cliente where nroCliente=".intval($model->idCliente));
-$puntos = Cliente::model()->calcularPuntosDisponibles($cliente->nroCliente);
+$delivery = $model->getDelivery();
+$cliente = $model->getCliente();	
+$puntos =  $model->calcularPuntosDisponibles();
 ?>
 <div class="form">
 <?php $form=$this->beginWidget('CActiveForm', array(

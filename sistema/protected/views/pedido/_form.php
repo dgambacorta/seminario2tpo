@@ -6,6 +6,8 @@
 //$mp = new MP ("1037224406390824", "J2XkbfqvaSRXzjtWxL9K7pd0fy0BRUSx");
 
 if(Yii::app()->session['nivelAcceso']==1){
+
+
 ?>
 
 	<div class="form">
@@ -32,6 +34,7 @@ if(Yii::app()->session['nivelAcceso']==1){
 		?>
 		<?php echo $form->error($model,'tipo_pedido'); ?>
 	</div>
+
 	
 	<?php if($model->tipo_pedido == 1){ ?>
 		<div class="row">
@@ -51,7 +54,7 @@ if(Yii::app()->session['nivelAcceso']==1){
 	<?php if($model->id){			
 		if($model->tipo_pedido == 2){
 			
-			$dni = Cliente::model()->findBySql("select * from Cliente where nroCliente=".$model->idCliente)->dni;			
+			$dni = $model->getClienteDni();			
 			echo "<b>Dni Cliente</b><br>" ; 
 			echo CHtml::textField("dnicliente", $dni,array('maxlength'=>8)) ;
 		}
@@ -66,7 +69,7 @@ if(Yii::app()->session['nivelAcceso']==1){
 		<div class="row">
 			<?php echo $form->labelEx($model,'producto'); ?>
 			<?php 		
-				$foo = CHtml::listData(Envase::model()->findAll(" disponible = 1",(array('order' => 'nombre'))), 'id', 'nombre');
+				$foo = CHtml::listData($model->getEnvase(), 'id', 'nombre');
 				$res = array('0'=>'--Seleccione--');		
 				foreach ($foo as $k=>$v)
 					$res[$k] = $v;

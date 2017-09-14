@@ -110,10 +110,8 @@
 							* */
 				
 				//Generales
-						array('label'=>'Home', 'url'=>array('/site/index'), 'visible'=>Yii::app()->user->isGuest),
-						array('label'=>'Sabores', 'url'=>array('/site/sabores'), 'visible'=>Yii::app()->user->isGuest),
-						array('label'=>'Productos', 'url'=>array('/site/productos'), 'visible'=>Yii::app()->user->isGuest),
-						array('label'=>'Acceder', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
+						
+						
 						array('label'=>'Salir ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest),
 
 						),),),));
@@ -131,11 +129,7 @@
 
 	<?php echo $content; ?>
 
-	<div class="clear"></div>
 
-	<div id="footer">
-		Copyright &copy; <?php echo date('Y'); ?> UADE <br/>
-		All Rights Reserved.<br/>
 
 	</div><!-- footer -->
 

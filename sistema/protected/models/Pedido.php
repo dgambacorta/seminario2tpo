@@ -69,6 +69,7 @@ class Pedido extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'clientes' => array(self::HAS_ONE, 'Cliente', 'nroCliente')
 		);
 	}
 
@@ -92,6 +93,34 @@ class Pedido extends CActiveRecord
 		}		
 		return $total;
 	}
+
+	public function getClienteDni(){
+
+		return Cliente::model()->findBySql("select * from Cliente where nroCliente=".intval($this->idCliente))->dni;
+
+	}
+
+	public function getEnvase(){
+
+		return Envase::model()->findAll(" disponible = 1",(array('order' => 'nombre')));
+	}
+	
+	public function calcularPuntosDisponibles(){
+
+		return Cliente::model()->calcularPuntosDisponibles(intval($this->idCliente));
+
+	}
+
+	public function getDelivery(){
+
+		return Delivery::model()->findBySql("select * from Despacho where idPedido = ".intval($this->id));
+
+	}
+
+	public function getCliente(){
+
+		return Cliente::model()->findBySql("select * from Cliente where nroCliente=".intval($this->idCliente));
+	}
 	
 	
 	public function getPuntos($id){
@@ -112,13 +141,13 @@ class Pedido extends CActiveRecord
 	return $total;
 	}
 	
-	public function getPuntosNecesarios($id){
+	public function getPuntosNecesarios(){
 		
 		$total = 0;
 		$productos = Yii::app()->db->createCommand()
 		->select('idProducto')
 		->from('ItemProducto')
-		->where('idPedido='.intval($id))
+		->where('idPedido='.intval($this->id))
 		->queryAll();
 
 			

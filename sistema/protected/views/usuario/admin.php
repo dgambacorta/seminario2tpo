@@ -13,7 +13,7 @@
         array('name'=>'usuario', 'header'=>'Usuario'),
         array('name'=>'nombre', 'header'=>'Nombre'),
         array('name'=>'apellido', 'header'=>'Apellido'),
-          array('name'=>'nivelAcceso', 'header'=>'Nivel Acceso'),
+          array('name'=>'nivelAcceso', 'header'=>'Nivel Acceso', 'value'=>'$data->getNivel($data->nivelAcceso)'),
 
         
         array(

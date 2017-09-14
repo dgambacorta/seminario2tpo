@@ -1,5 +1,6 @@
-<?php if(Yii::app()->session['nivelAcceso']==1){ 
-		
+<?php 
+if(Yii::app()->session['nivelAcceso']==1){ 
+	
 	if($model->pagaCon == 'punto'){
 		$canje = ' - Canje';
 	}else{
@@ -12,20 +13,16 @@
 	<h1>Detalle del Pedido</h1>
 <?php } ?>
 
-<?php
-/* @var $this PedidoController */
-/* @var $model Pedido */
-/* @var $form CActiveForm */
-
-$delivery = Delivery::model()->findBySql("select * from Despacho where idPedido = ".intval($model->id));
-?>
 <div class="form">
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'pedido-form',
 	'enableAjaxValidation'=>true,
 )); ?>	
 
-	<?php if(Yii::app()->session['nivelAcceso']==2){ ?>		
+	<?php 
+
+	$delivery = $model->getDelivery();
+	if(Yii::app()->session['nivelAcceso']==2){ ?>		
 	<h4 style="color:#23AD37 !important;">Ha realizado el pedido en forma exitosa!</h4>		
 	<?php } ?>
 	
@@ -43,9 +40,11 @@ $delivery = Delivery::model()->findBySql("select * from Despacho where idPedido 
 	<?php  }elseif($model->idCliente != 0){
 	echo "<h3>Datos del Cliente</h3>";
 
-	$cliente = Cliente::model()->findBySql("select * from Cliente where nroCliente=".$model->idCliente);	
-	$puntos = Cliente::model()->calcularPuntosDisponibles($cliente->nroCliente);
-	
+	$cliente = $model->getCliente();
+
+	$puntos =  $model->calcularPuntosDisponibles();
+		
+		echo "<div class=\"row\"><b>Fecha:</b> ".$model->fecha."	</div>";	
 		echo "<div class=\"row\"><b>Nombre:</b> ".$cliente->nombre."	</div>";
 		echo "<div class=\"row\"><b>Apellido:</b> ".$cliente->apellido."	</div>";
 		echo "<div class=\"row\"><b>Dirección:</b> ".$cliente->domicilio."	</div>";

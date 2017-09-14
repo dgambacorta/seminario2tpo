@@ -62,6 +62,12 @@ class Usuario extends CActiveRecord
 		);
 	}
 
+	public function getNivel($nivel){ 
+		
+		return NivelAcceso::model()->findBySql("select * from nivelacceso where id=".intval($nivel))->nombre;
+	}
+		
+
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */

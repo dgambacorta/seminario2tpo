@@ -82,9 +82,9 @@ class Puntos extends CActiveRecord
 		
 		if($puntos == null){
 			$puntosres = 0;
-		else		
+		}else{		
 			$puntosres = $puntos->cantidad;
-			
+		}
 		return $puntosres;
 	}
 
