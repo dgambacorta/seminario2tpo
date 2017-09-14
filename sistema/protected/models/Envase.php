@@ -79,7 +79,7 @@ class Envase extends CActiveRecord
 			
 	
 			
-			public function existe($id){ /* TODO */
+			public function existe($id){ 
 			
 				$result = false;					
 				$count = Envase::model()->findBySql("select * from Producto where id=".intval($id));

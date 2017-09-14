@@ -106,7 +106,6 @@ class ItemProducto extends CActiveRecord
 			
 		$producto = Envase::model()->findBySql("select * from Producto where id=".intval($id));
 	
-		
 		return $producto->precio;
 			
 		}
@@ -116,7 +115,6 @@ class ItemProducto extends CActiveRecord
 			
 		$producto = Envase::model()->findBySql("select * from Producto where id=".intval($id));
 	
-		
 		return $producto->puntosOtorga;
 			
 		}
@@ -124,16 +122,12 @@ class ItemProducto extends CActiveRecord
 		public function getSubPuntosNecesarios($id){
 			
 		$producto = Envase::model()->findBySql("select * from Producto where id=".intval($id));
-	
 		
 		return $producto->puntosNec;
 			
 		}
 	
 		public function getProducto($id){
-			
-
-
 			
 			$producto = Envase::model()->findBySql("select * from Producto where id=".intval($id));
 			
@@ -147,8 +141,6 @@ class ItemProducto extends CActiveRecord
 			$sabores = json_decode($sabores);
 		
 			$result = "";
-		
-			
 			
 			$sab = array();
 				foreach ($sabores as $v){
@@ -163,19 +155,13 @@ class ItemProducto extends CActiveRecord
 				$s = Sabores::model()->findBySql("select * from Sabores where id=".intval($v));
 				
 				if($cant == $i)
-				$result.=' '.$s->nombre.' ';
+					$result.=' '.$s->nombre.' ';
 				else
-				$result.=' '.$s->nombre.' -';
+					$result.=' '.$s->nombre.' -';
 			}
 				$i = $i + 1 ;
 			}
 
-
-
-		
-	
-	
-				
 			return $result;
 			}
 

@@ -4,6 +4,13 @@
 
 class PedidoController extends Controller
 {
+
+	const PUNTOS = 3;
+
+	const ERROR = 1;
+	const NORECURRENTE = 1;
+	const RECURRENTE = 2;
+	const PUNTOS = 3;
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
@@ -83,15 +90,15 @@ class PedidoController extends Controller
 				$flag = 0;
 				if($_POST['Pedido']['tipo_pedido'] == 'empty'){				
 					$mensaje = "Debe indicar el tipo de pedido!";
-					$flag = 1;			
+					$flag = ERROR;			
 				}
 				
 				if($_POST['Pedido']['tipo_pedido'] == '2' && $_POST['dnicliente']=='' ){
 					$mensaje = "Debe indicar el DNI del cliente";
-					$flag = 1;				
+					$flag = ERROR;				
 				}
 		
-				if($flag == 1){
+				if($flag == ERROR){
 					Yii::app()->user->setFlash('error', $mensaje);
 					$this->redirect(array('create'));
 				}		
@@ -107,24 +114,24 @@ class PedidoController extends Controller
 				
 				if(isset($_POST['Pedido'])){
 				
-					if($_POST['Pedido']['tipo_pedido']==1){
-						$model->tipo_pedido = $_POST['Pedido']['tipo_pedido']; /* TODO */
-						$model->direccion = $_POST['direccion']; /* TODO */
-						$model->telefono = $_POST['telefono']; /* TODO */
+					if($_POST['Pedido']['tipo_pedido'] == NORECURRENTE){
+						$model->tipo_pedido = mysqli_real_escape_string($_POST['Pedido']['tipo_pedido']);
+						$model->direccion = mysqli_real_escape_string($_POST['direccion']);
+						$model->telefono = mysqli_real_escape_string($_POST['telefono']);
 					
 					}
 				}
 			
-				if(Yii::app()->session['nivelAcceso']==2){
+				if(Yii::app()->session['nivelAcceso'] == RECURRENTE){
 					
-					$model->tipo_pedido = 2;
-					$model->direccion = $_POST['direccion'];
-					$model->telefono = $_POST['telefono'];
+					$model->tipo_pedido = RECURRENTE;
+					$model->direccion = mysqli_real_escape_string($_POST['direccion']);
+					$model->telefono = mysqli_real_escape_string($_POST['telefono']);
 					$model->idCliente = Yii::app()->session['nroCliente'];
 					$existe = 1;	
 				}	
 			
-				if($model->tipo_pedido == 2 && Yii::app()->session['nivelAcceso']==1){
+				if($model->tipo_pedido == RECURRENTE && Yii::app()->session['nivelAcceso']==1){
 					$dni = intval($_POST['dnicliente']);
 					$existe = Cliente::model()->find('dni = '.$dni);
 					$cliente = Cliente::model()->findBySql("select * from Cliente where dni=".$dni);
@@ -132,7 +139,7 @@ class PedidoController extends Controller
 						$model->idCliente = $cliente->nroCliente;
 					}
 					
-				}elseif($model->tipo_pedido==1){
+				}elseif($model->tipo_pedido == NORECURRENTE){
 					$existe = 1;				
 				}
 			
@@ -175,8 +182,8 @@ class PedidoController extends Controller
 			$total = $total + $subtotal;
 		}
 			
-		$puntosDisponibles = (int)$total;	
-		$puntosMenorProducto = (int)$puntosMenorProducto[0]['min'];
+		$puntosDisponibles = intval($total);	
+		$puntosMenorProducto = intval($puntosMenorProducto[0]['min']);
 	
 		if($puntosDisponibles >= $puntosMenorProducto ){
 			return true;
@@ -197,9 +204,9 @@ class PedidoController extends Controller
 		if(isset($_POST['crearcanje'])){
 			if(isset($_POST['Pedido']) || isset($_POST['direccion'])){
 				$model->fecha = date("Y/m/d");
-				$model->pagaCon = 'punto';
+				$model->pagaCon = 'Puntos';
 				$model->precioTotal = 0;		
-				$model->tipo_pedido = 3; 
+				$model->tipo_pedido = PUNTOS; 
 				/* No tiene productos cargados */
 				if(Yii::app()->session['nivelAcceso']==1){ //ADMIN /* TODO  - Sacar hardcore*/			
 				
@@ -222,8 +229,8 @@ class PedidoController extends Controller
 						
 				if(Yii::app()->session['nivelAcceso']==2){ //Cliente					
 
-					$model->direccion = $_POST['direccion']; /* TODO Porque es post y no session??? */	
-					$model->telefono = 	$_POST['telefono'];
+					$model->direccion = mysqli_real_escape_string($_POST['direccion']);
+					$model->telefono = 	mysqli_real_escape_string($_POST['telefono']);
 					$model->idCliente = Yii::app()->session['nroCliente'];					
 					$tiene = $this->tienePuntosCanje($model->idCliente);	
 							
@@ -278,7 +285,7 @@ class PedidoController extends Controller
 			
 			
 			//Tiene DNI
-			if($model->tipo_pedido == 2 && Yii::app()->session['nivelAcceso']==1){
+			if($model->tipo_pedido == RECURRENTE && Yii::app()->session['nivelAcceso']==1){
 				$dni = intval($_POST['dnicliente']);
 				$existe = Cliente::model()->find('dni = '.$dni);
 				$cliente = Cliente::model()->findBySql("select * from Cliente where dni=".$dni);
@@ -297,7 +304,7 @@ class PedidoController extends Controller
 					if($puntos->save()){
 					
 						$pc = new PuntosCliente;
-						$pc->idcliente = 	$cliente->nroCliente;
+						$pc->idcliente = $cliente->nroCliente;
 						$pc->idpuntos = $puntos->id;
 						$pc->save();					
 					}
@@ -306,7 +313,7 @@ class PedidoController extends Controller
 			
 			if(Yii::app()->session['nivelAcceso']==2){
 			
-				$model->tipo_pedido = 2;					
+				$model->tipo_pedido = RECURRENTE;					
 				$totalPuntos = Pedido::model()->getPuntos($model->id);				
 				$puntos = new Puntos();
 				$puntos->cantidad = $totalPuntos;
@@ -314,7 +321,7 @@ class PedidoController extends Controller
 				if($puntos->save()){
 					
 					$pc = new PuntosCliente;
-					$pc->idcliente = 	Yii::app()->session['nroCliente'];
+					$pc->idcliente = Yii::app()->session['nroCliente'];
 					$pc->idpuntos = $puntos->id;
 					$pc->save();
 						
@@ -323,15 +330,15 @@ class PedidoController extends Controller
 			
 			//No tiene DNI
 			
-			if($model->tipo_pedido == 1){			
+			if($model->tipo_pedido == NORECURRENTE){			
 				if($_POST['Pedido']['delivery'] == 1) {
 					if($_POST['direccion']==''){
 					Yii::app()->user->setFlash('error', 'Debe indicar un domicilio a donde enviar el delivery');
 					$this->redirect(array('update','id'=>$model->id));				
 					}
 				}				
-				$model->direccion = $_POST['direccion'];
-				$model->telefono = $_POST['telefono'];
+				$model->direccion = mysqli_real_escape_string($_POST['direccion']);
+				$model->telefono = mysqli_real_escape_string($_POST['telefono']);
 			}	
 						
 			
@@ -343,7 +350,7 @@ class PedidoController extends Controller
 				$despacho->idEmpleadoDelivery = $despacho->getEmpleadoDelivery();
 						
 				//if, usuario, asignar puntos y asigna cliente a despacho
-				if($model->tipo_pedido == 2 && Yii::app()->session['nivelAcceso']==1 ){			
+				if($model->tipo_pedido == RECURRENTE && Yii::app()->session['nivelAcceso']==1 ){			
 					$despacho->idCliente = $cliente->nroCliente;
 				}elseif(Yii::app()->session['nivelAcceso']==2){
 					$despacho->idCliente = Yii::app()->session['nroCliente'];
@@ -375,7 +382,7 @@ class PedidoController extends Controller
 			
 						if($existeSabores){
 							$itemProd = new ItemProducto();
-							$itemProd->idProducto = $_POST['Pedido']['producto'];
+							$itemProd->idProducto = mysqli_real_escape_string($_POST['Pedido']['producto']);
 							$itemProd->sabores = json_encode($_POST['sabores']);
 							$itemProd->idPedido = $model->id;
 							$itemProd->save();							
@@ -428,8 +435,8 @@ class PedidoController extends Controller
 			
 			$model->attributes=$_POST['Pedido'];
 			if(Yii::app()->session['nivelAcceso']==1){
-				$model->direccion =  $_POST['direccion'];
-				$model->telefono =  $_POST['telefono'];
+				$model->direccion =  mysqli_real_escape_string($_POST['direccion']);
+				$model->telefono =  mysqli_real_escape_string($_POST['telefono']);
 			}
 										
 			//if delivery, crear orden de despacho
@@ -467,9 +474,7 @@ class PedidoController extends Controller
 							$post->save();							
 							$puntosBaja = $puntosBaja - $subtotal;
 							$f = 1; /* todo */
-						}
-						
-					
+						}				
 					
 						if($subtotal > $puntosBaja && $f==0 ){				
 						
@@ -529,7 +534,7 @@ class PedidoController extends Controller
 	  public function actionShowuserinfo(){
 		  
 	   if(isset($_POST['Pedido'])){	  
-			if($_POST['Pedido']['tipo_pedido']==2){ 
+			if($_POST['Pedido']['tipo_pedido'] == RECURRENTE){ 
 				echo "<b>Dni Cliente</b><br>" ; 
 				echo CHtml::textField("dnicliente", '',array('maxlength'=>8)) ; 
 			}elseif($_POST['Pedido']['tipo_pedido']==1){

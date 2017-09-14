@@ -53,16 +53,6 @@ class Delivery extends CActiveRecord
 	}
 
 	public function getEmpleadoDelivery(){
-
-		$c = EmpleadoDelivery::model()->findAllBySql("SELECT * FROM Despacho");
-		$cantidad = count($c);
-		
-		/*TODO - Revisar esto, hecho para solo dos delivery guys */
-		if($cantidad == 0){
-			return 1;
-		}elseif($cantidad == 1){
-			return 2;
-		}elseif($cantidad >= 2){
 			
 			$empleados = Yii::app()->db->createCommand()
 			->select('count(*) as cant,idEmpleadoDelivery')
@@ -74,7 +64,7 @@ class Delivery extends CActiveRecord
 				
 			foreach($empleados as $k=>$v)
 				return $v['idEmpleadoDelivery'];				
-			}
+			
 		}
 	
 
@@ -121,3 +111,4 @@ class Delivery extends CActiveRecord
 		));
 	}
 }
+	

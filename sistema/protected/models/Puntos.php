@@ -81,9 +81,9 @@ class Puntos extends CActiveRecord
 		$puntos = Puntos::model()->findBySql("select * from Puntos where estado = 1 and id=".intval($id));
 		
 		if($puntos == null){
-		$puntosres = 0;
+			$puntosres = 0;
 		else		
-		$puntosres = $puntos->cantidad;
+			$puntosres = $puntos->cantidad;
 			
 		return $puntosres;
 	}
@@ -102,7 +102,6 @@ class Puntos extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('cantidad',$this->cantidad);
 		
-
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));

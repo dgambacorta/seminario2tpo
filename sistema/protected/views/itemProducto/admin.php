@@ -1,32 +1,5 @@
-<?php
-/* @var $this ItemProductoController */
-/* @var $model ItemProducto */
 
-$this->breadcrumbs=array(
-	'Item Productos'=>array('index'),
-	'Manage',
-);
-
-$this->menu=array(
-	array('label'=>'List ItemProducto', 'url'=>array('index')),
-	array('label'=>'Create ItemProducto', 'url'=>array('create')),
-);
-
-Yii::app()->clientScript->registerScript('search', "
-$('.search-button').click(function(){
-	$('.search-form').toggle();
-	return false;
-});
-$('.search-form form').submit(function(){
-	$('#item-producto-grid').yiiGridView('update', {
-		data: $(this).serialize()
-	});
-	return false;
-});
-");
-?>
-
-<h1>Manage Item Productos</h1>
+<h1>Administrar Item Productos</h1>
 
 
 

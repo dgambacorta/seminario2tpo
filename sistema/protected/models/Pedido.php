@@ -83,7 +83,7 @@ class Pedido extends CActiveRecord
 		$productos = Yii::app()->db->createCommand()
 		->select('idProducto')
 		->from('ItemProducto')
-		->where('idPedido='.$id)
+		->where('idPedido='.intval($id))
 		->queryAll();
 			
 		foreach($productos as $v){			
@@ -100,7 +100,7 @@ class Pedido extends CActiveRecord
 		$productos = Yii::app()->db->createCommand()
 		->select('idProducto')
 		->from('ItemProducto')
-		->where('idPedido='.$id)
+		->where('idPedido='.intval($id))
 		->queryAll();
 
 			
@@ -118,7 +118,7 @@ class Pedido extends CActiveRecord
 		$productos = Yii::app()->db->createCommand()
 		->select('idProducto')
 		->from('ItemProducto')
-		->where('idPedido='.$id)
+		->where('idPedido='.intval($id))
 		->queryAll();
 
 			

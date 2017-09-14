@@ -75,7 +75,6 @@ class NivelAcceso extends CActiveRecord
 		// should not be searched.
 
 		$criteria=new CDbCriteria;
-
 		$criteria->compare('id',$this->id);
 		$criteria->compare('nombre',$this->nombre,true);
 

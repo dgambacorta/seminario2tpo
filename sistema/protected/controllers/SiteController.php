@@ -49,14 +49,14 @@ class SiteController extends Controller
 	public function actionSabores()
 	{
 
-				$this->render('sabores');
+		$this->render('sabores');
 		
 	}
 	
-		public function actionProductos()
+	public function actionProductos()
 	{
 
-				$this->render('productos');
+		$this->render('productos');
 		
 	}
 

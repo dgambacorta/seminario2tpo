@@ -41,8 +41,6 @@ class Cliente extends CActiveRecord
 	 */
 	 
 	 
-	 
-	 
 	public function getPuntos($id){
 		/* TODO: Ver si no hace falta validar que el id del pedido corresponda al cliente */
 		$total = 0;
@@ -54,10 +52,8 @@ class Cliente extends CActiveRecord
 		->queryAll();
 		
 		foreach($productos as $v){
-			
 			$subtotal = ItemProducto::model()->getSubPuntos($v['idProducto']);				
 			$total = $total + $subtotal;
-			
 		}
 	
 	return $total;
