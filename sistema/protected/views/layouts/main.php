@@ -20,16 +20,12 @@
 
 <body>
 
-<div class="container" id="page">
 
-	<div id="header">
-		<div id="logo"></div>
-	</div><!-- header -->
-
-	<div>
 
 		
 <?php
+
+	if (!Yii::app()->user->isGuest) { 
 
 	$admin = false;
 	$atencion = false;
@@ -50,6 +46,14 @@
 
 
 ?>
+
+<div class="container" id="page">
+
+	<div id="header">
+		<div id="logo"></div>
+	</div><!-- header -->
+
+	<div>
 
 <?php  $this->widget('bootstrap.widgets.TbNavbar',array(
 		'items'=>array(
@@ -120,6 +124,7 @@
 		 ?>
 		
 	</div>
+	<?php } ?>
 
 	<?php if(isset($this->breadcrumbs)):?>
 		<?php $this->widget('zii.widgets.CBreadcrumbs', array(

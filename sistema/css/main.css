@@ -3,28 +3,28 @@ body
 	margin: 0;
 	padding: 0;
 	color: #555;
-	font: normal 10pt Arial,Helvetica,sans-serif;
-	background: #EFEFEF;
+	font: normal 12pt Arial,Helvetica,sans-serif;
+	background: #FFF;
 }
 
 #page
 {
-	margin-top: 5px;
+	margin-top: 70px;
 	margin-bottom: 5px;
 	background: white;
-
+	border: 0px solid #C9E0ED;
 }
 
 #header
 {
 	margin: 0;
 	padding: 0;
-	
+	border-top: 3px solid #C9E0ED;
 }
 
 #content
 {
-    padding: 40px;
+    padding: 0px;
 }
 
 #sidebar
@@ -47,7 +47,17 @@ body
 	font-size: 200%;
 }
 
-#mainmenu
+#ingresar{
+    height:50px;
+    width: 100px;
+    background: #01b085;
+    border:0px;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#mainmenu 
 {
 	background:white url(bg.gif) repeat-x left top;
 }
@@ -65,9 +75,9 @@ body
 
 #mainmenu ul li a
 {
-	color:#ffffff;
+	color:#000;
 	background-color:transparent;
-	font-size:12px;
+	font-size:14px;
 	font-weight:bold;
 	text-decoration:none;
 	padding:5px 8px;
@@ -75,7 +85,7 @@ body
 
 #mainmenu ul li a:hover, #mainmenu ul li.active a
 {
-	color: #6399cd;
+	color: #000;
 	background-color:#EFF4FA;
 	text-decoration:none;
 }
